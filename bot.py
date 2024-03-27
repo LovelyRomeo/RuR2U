@@ -1,11 +1,17 @@
-import telebot
-from telebot import types
-from openai import OpenAI
+import requests
+
+proxy = {
+    'http': 'rur2u.ru:80',
+}
+   
+try:
+    response = requests.get('https://api.openai.com', proxies=proxy)
+    print("Connection successful")
+except requests.exceptions.RequestException:
+    print("Connection failed")
 
 
-
-
-client = OpenAI(api_key='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')
+client = OpenAI(api_key='')
 
 def gpt(text):
     completion = client.chat.completions.create(
@@ -41,12 +47,6 @@ def callback_message(callback):
     if callback.data == 'AI':
         bot.send_message(callback.message.chat.id, 'Добрый день!\nЯ искусстенный интеллект RuR2U и готов ответить на все ваши вопросы про Россию🇷🇺.\n\nКакой у вас вопрос?')
 
-def webAppKeyboard():
-    keyboard = types.ReplyKeyboardMarkup(row_width=1)
-    webAppTest = types.WebAppInfo(url)
-    one_butt = types.KeyboardButton(text="RuR2U Лучшее о России", web_app=webAppTest)
-    keyboard.add(one_butt)
-
 
 @bot.message_handler()
 def ai(message):
@@ -55,4 +55,4 @@ def ai(message):
     bot.delete_message(chat_id=message.chat.id, message_id=message.message_id + 1) 
 
 
-bot.polling()
+bot.polling(none_stop=True)
