@@ -1,3 +1,6 @@
+import telebot
+from telebot import types
+from openai import OpenAI
 import requests
 
 proxy = {
